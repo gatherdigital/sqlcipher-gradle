@@ -1,25 +1,34 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
-        classpath 'com.github.dcendents:android-maven-plugin:1.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
     }
 }
 
-apply plugin: 'android-library'
-apply plugin: 'android-maven'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-version '3.0.1'
-group 'net.sqlcipher'
+version '3.3.1'
+group 'net.sqlcipher.gradle'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "23.0.0"
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: project.hasProperty('repoDir') ? "file://$repoDir" : "file://$buildDir/repo/")
+            pom.artifactId = "sqlcipher-gradle"
+        }
+    }
 }
-
